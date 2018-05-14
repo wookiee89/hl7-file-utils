@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jvkusto/hl7-file-utils/issues"
   },
-  "homepage": "https://github.com/jvkusto/hl7-file-utils#readme"
+  "homepage": "https://github.com/jvkusto/hl7-file-utils#readme",
+  "dependencies": {
+    "dbly-linked-list": "^0.2.0"
+  }
 }
