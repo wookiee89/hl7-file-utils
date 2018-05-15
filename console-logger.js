@@ -1,5 +1,6 @@
 const	path = require('path'),
 	fs = require('fs'),
+	fsext = require('./fsext.js'),
 	os = require('os'),
 	ifaces = os.networkInterfaces(),
 	util = require('util'),
@@ -28,7 +29,7 @@ let ips = [];
 	});
 	let ip = ips.length>0 && ips[0].address || '' ;
 
-	fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+	fsext.mkdirSync(logDirectory);
 
 	// Simple console logger
 	// Or 'w' to truncate the file every time the process starts.

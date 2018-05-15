@@ -1,26 +1,27 @@
 const path = require('path'),
-			fs = require('fs'),
-			CSV_INFO_HEADER = [
-			'code',
-			'mode',
-			'protocol',
-			'method',
-			'path',
-			'client',
-			'historical',
-			'mtype',
-			'message',
-			'error',
-			'fileName',
-			'start',
-			'end',
-			'time',
-			'rec_ip',
-			'sender_ip',
-			'outfile',
-			'msgid',
-			'count',
-			'ts'];
+	fs = require('fs'),
+	fsExt = require('./fsext.js'),
+	CSV_INFO_HEADER = [
+		'code',
+		'mode',
+		'protocol',
+		'method',
+		'path',
+		'client',
+		'historical',
+		'mtype',
+		'message',
+		'error',
+		'fileName',
+		'start',
+		'end',
+		'time',
+		'rec_ip',
+		'sender_ip',
+		'outfile',
+		'msgid',
+		'count',
+		'ts'];
 
 function formatNumberLength(num, length) {
 	let r = '' + num;
@@ -36,32 +37,7 @@ class UtilsHelper {
 	}
 
 	static createDir(folder){
-		fs.existsSync(folder) || UtilsHelper.mkDirByPathSync(folder,{isRelativeToScript: true});
-	}
-
-	static mkDirByPathSync(targetDir, {isRelativeToScript = false} = {}) {
-		const sep = path.sep;
-		const initDir = path.isAbsolute(targetDir) ? sep : '';
-		const baseDir = isRelativeToScript ? __dirname : '.';
-
-		targetDir.split(sep).reduce((parentDir, childDir) => {
-			const curDir = path.resolve(baseDir, parentDir, childDir);
-			try {
-				if(!fs.existsSync(curDir)) {
-					fs.mkdirSync(curDir);
-					//logger.debug(`Directory created ${curDir}`);
-				}
-			} catch (err) {
-				logger.error(err);
-				if (err.code !== 'EEXIST') {
-					throw err;
-				}
-
-				//logger.debug(`Directory ${curDir} already exists!`);
-			}
-
-			return curDir;
-		}, initDir);
+		fsExt.mkdirSync(folder);
 	}
 
 	static moveToStorage( savingPath, moveToPath ){
@@ -69,16 +45,6 @@ class UtilsHelper {
 		UtilsHelper.createDir(moveToDir);
 		//logger.debug('Moved to', moveToDir, moveToPath);
 		fs.renameSync(savingPath, moveToPath);
-	}
-
-	static getTSDiff( ts ){
-		ts = ts || [];
-		let now = Date.now(),
-			prevTS = now;
-		if(ts.length>0){
-			prevTS = ts[ts.length-1].ts || prevTS;
-		}
-		return now - prevTS;
 	}
 
 	static formatNumberLength(num, length) {
@@ -103,8 +69,8 @@ class UtilsHelper {
 		opts = opts || {};
 		opts['splitter'] = opts['splitter'] || '_';
 		let list = [],
-				ext = opts.ext || '.xml',
-				files = fs.existsSync(folderPath) && fs.readdirSync(folderPath).filter(f => f.indexOf('.')!=0 ) || [];
+			ext = opts.ext || '.xml',
+			files = fs.existsSync(folderPath) && fs.readdirSync(folderPath).filter(f => f.indexOf('.')!=0 ) || [];
 
 		if (!files.length) {
 			return list;
@@ -126,8 +92,8 @@ class UtilsHelper {
 
 	static sortDescFiles(array, opts) {
 		opts = opts || {};
-    let field = opts.sort_fields || false,
-	    splitter = opts.splitter || '_';
+		let field = opts.sort_fields || false,
+			splitter = opts.splitter || '_';
 
 		return array.sort(function(a, b) {
 			a = a && field && a[field] || a;
@@ -164,6 +130,18 @@ class UtilsHelper {
 		httpResponse.end();
 	}
 
+	static isStop( settingsFilePath, service_name) {
+		let stop = false;
+		if (fs.existsSync(settingsFilePath)) {
+			try {
+				let settings = JSON.parse(fs.readFileSync(settingsFilePath));
+				stop = settings && settings[service_name] && settings[service_name].status == 'stop';
+			} catch (err) {
+				console.error(err)
+			}
+		}
+		return stop;
+	}
 }
 
 module.exports = UtilsHelper;

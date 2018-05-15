@@ -1,5 +1,6 @@
 const UtilsHelper = require('./utils-helper.js'),
 	Logger = require('./console-logger.js'),
+	fsext = require('./fsext.js'),
 	Queue = require('./queue.js');
 
 /*
@@ -11,6 +12,7 @@ class Utils {
 		this.UtilsHelper = UtilsHelper;
 		this.Logger = Logger;
 		this.Queue = Queue;
+		this.fsExt = fsext;
 	}
 
 }
