@@ -5,7 +5,7 @@ const	path = require('path'),
 	ifaces = os.networkInterfaces(),
 	util = require('util'),
 	logDirectory = path.join( process.env.LOG_DIR || '/efs/logs' ),
-	SVC_NAME = path.join( process.env.process.env.SVC_NAME || 'log' );
+	SVC_NAME = path.join( process.env.SVC_NAME || 'log' );
 
 let ips = [];
 	Object.keys(ifaces).forEach(function (ifname) {
