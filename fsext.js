@@ -3,8 +3,10 @@ const path = require('path'),
 
 class FsExt {
 
-	static mkdirSync(targetDir, {isRelativeToScript = true} = {}) {
-		if(fs.existsSync(targetDir)){
+	static mkdirSync(targetDir, {isRelativeToScript = false} = {}) {
+		targetDir = targetDir.trim();
+
+		if(!targetDir || fs.existsSync(targetDir)){
 			return;
 		}
 		const sep = path.sep;
@@ -12,14 +14,14 @@ class FsExt {
 		const baseDir = isRelativeToScript ? __dirname : '.';
 
 		targetDir.split(sep).reduce((parentDir, childDir) => {
-			const curDir = path.resolve(baseDir, parentDir, childDir);
+			let curDir = path.resolve(baseDir, parentDir, childDir).trim();
 			try {
 				if (!fs.existsSync(curDir)) {
+					console.log(`Directory creating ${curDir}`);
 					fs.mkdirSync(curDir);
-					//console.debug(`Directory created ${curDir}`);
 				}
 			} catch (err) {
-				console.error(err);
+				console.error('Error', curDir, err);
 				if (err.code !== 'EEXIST') {
 					throw err;
 				}

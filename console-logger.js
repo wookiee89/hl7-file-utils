@@ -30,6 +30,7 @@ let ips = [];
 	});
 	let ip = ips.length>0 && ips[0].address || '' ;
 
+	console.log('logDirectory', logDirectory);
 	fsext.mkdirSync(logDirectory);
 
 	// Simple console logger
