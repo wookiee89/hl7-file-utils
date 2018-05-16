@@ -12,7 +12,7 @@ class FsExt {
 		const sep = path.sep;
 		const initDir = path.isAbsolute(targetDir) ? sep : '';
 		const baseDir = isRelativeToScript ? __dirname : '.';
-
+		console.log(`Starting creating ${targetDir}`);
 		targetDir.split(sep).reduce((parentDir, childDir) => {
 			let curDir = path.resolve(baseDir, parentDir, childDir).trim();
 			try {

@@ -5,7 +5,7 @@ const	path = require('path'),
 	ifaces = os.networkInterfaces(),
 	util = require('util'),
 	logDirectory = path.join( process.env.LOG_DIR || '/efs/logs' ),
-	SVC_NAME = path.join( process.env.SVC_NAME || 'log' );
+	NAME_SVC = path.join( process.env.NAME_SVC || 'log' );
 
 let ips = [];
 	Object.keys(ifaces).forEach(function (ifname) {
@@ -48,7 +48,7 @@ let ips = [];
 	function writeToLog( arguments, onConsole ){
 
 		let d = new Date(),
-				logFileName = path.join(logDirectory, `${SVC_NAME}_${d.toLocaleDateString()}_(${ip}).txt`);
+				logFileName = path.join(logDirectory, `${NAME_SVC}_${d.toLocaleDateString()}_(${ip}).txt`);
 				n = d.toLocaleDateString() + ' ' + d.toLocaleTimeString() + '.' + ('0000'+d.getMilliseconds()).slice(-4) + ' ';
 
 		fs.appendFileSync( logFileName, n + util.format.apply(null, arguments) + '\n');
