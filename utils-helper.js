@@ -117,12 +117,10 @@ class UtilsHelper {
 			message = JSON.stringify(message);
 		}
 
-		if(logger) {
-			if (status === 200) {
-				logger.info(message);
-			} else {
-				logger.error(message);
-			}
+		if (status === 200) {
+			//console.info(message);
+		} else {
+			console.error(message);
 		}
 
 		httpResponse.writeHead(status);

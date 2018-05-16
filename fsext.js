@@ -16,15 +16,15 @@ class FsExt {
 			try {
 				if (!fs.existsSync(curDir)) {
 					fs.mkdirSync(curDir);
-					//logger.debug(`Directory created ${curDir}`);
+					//console.debug(`Directory created ${curDir}`);
 				}
 			} catch (err) {
-				logger.error(err);
+				console.error(err);
 				if (err.code !== 'EEXIST') {
 					throw err;
 				}
 
-				//logger.debug(`Directory ${curDir} already exists!`);
+				//console.debug(`Directory ${curDir} already exists!`);
 			}
 
 			return curDir;
