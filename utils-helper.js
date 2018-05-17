@@ -36,17 +36,6 @@ class UtilsHelper {
 		return CSV_INFO_HEADER;
 	}
 
-	static createDir(folder){
-		fsExt.mkdirSync(folder);
-	}
-
-	static moveToStorage( savingPath, moveToPath ){
-		let moveToDir = path.dirname(moveToPath);
-		UtilsHelper.createDir(moveToDir);
-		//logger.debug('Moved to', moveToDir, moveToPath);
-		fs.renameSync(savingPath, moveToPath);
-	}
-
 	static formatNumberLength(num, length) {
 		return formatNumberLength(num, length);
 	};
@@ -140,6 +129,11 @@ class UtilsHelper {
 		}
 		return stop;
 	}
+
+	static getCSV(msg){
+		return UtilsHelper.getCsvHeader().map( name => msg[name] || '' ).join('|');
+	}
+
 }
 
 module.exports = UtilsHelper;
