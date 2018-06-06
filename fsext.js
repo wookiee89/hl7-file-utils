@@ -3,8 +3,12 @@ const path = require('path'),
 
 class FsExt {
 
+	/*
+		Do copy and return promise or error.nessage:
+		src - path for sorce file;
+		dest - destination path with file name.
+	 */
 	static copyFileSync( src, dest){
-
 		return new Promise((resolve, reject) => {
 
 			let message = '';
