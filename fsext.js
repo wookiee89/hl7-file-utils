@@ -3,6 +3,43 @@ const path = require('path'),
 
 class FsExt {
 
+	static copyFileSync( src, dest){
+
+		return new Promise((resolve, reject) => {
+
+			let message = '';
+			if (!fs.existsSync(src)) {
+				message = 'Src file not exists: ' + src;
+				console.error(message);
+			}
+			if (fs.existsSync(dest)) {
+				message = 'Dest file already exists: ' + dest;
+				console.error(message);
+			}
+
+			try {
+				if (!message) {
+					let rs = fs.createReadStream(src),
+						ws = fs.createWriteStream(dest);
+					rs.pipe(ws);
+					rs.on('end', function () {
+						//console.log('RS done.', Date.now());
+					});
+					ws.on('finish', function () {
+						//console.log('WS done.', Date.now());
+						resolve();
+					});
+				}
+			} catch (err) {
+				message = err.message;
+			} finally {
+				if (message) {
+					reject({message: message});
+				}
+			}
+		});
+	}
+
 	static mkdirSync(targetDir, {isRelativeToScript = false} = {}) {
 		targetDir = targetDir.trim();
 
