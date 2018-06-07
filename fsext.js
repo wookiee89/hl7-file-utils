@@ -8,7 +8,7 @@ class FsExt {
 		src - path for sorce file;
 		dest - destination path with file name.
 	 */
-	static copyFileSync( src, dest){
+	static copyFile( src, dest){
 		return new Promise((resolve, reject) => {
 
 			let message = '';
