@@ -92,6 +92,43 @@ class AzureHelper {
 			});
 		});
 	}
+
+
+	checkForMessages(sbService, queueName) {
+		return new Promise((resolve, reject) => {
+			sbService.getMessages(queueName, function (err, serverMessages) {
+				if (err) {
+					if (err == 'No messages to receive') {
+						console.log('No messages');
+						resolve('');
+					} else {
+						//callback(err);
+						console.error('Error getMessages', err);
+						reject(err);
+					}
+				} else {
+
+					if( serverMessages.length == 0 || !serverMessages[0].messageText ){
+						/* No more messages */
+						resolve('');
+						return;
+					}
+
+					let text = serverMessages[0].messageText;
+					sbService.deleteMessage(queueName, serverMessages[0].messageId, serverMessages[0].popReceipt, function(err2) {
+						if (err2) {
+							console.error('Can not delete the message', text, err2);
+							resolve(text);
+						}else{
+							// Message deleted
+							resolve(text);
+						}
+					});
+				}
+			});
+		});
+	}
+
 }
 
 module.exports = AzureHelper;
