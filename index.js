@@ -1,6 +1,7 @@
 const UtilsHelper = require('./utils-helper.js'),
 	Logger = require('./console-logger.js'),
-	fsext = require('./fsext.js');
+	fsext = require('./fsext.js'),
+	azureHlr = require('./azure-helper.js');
 
 /*
 	Module loader.
@@ -11,6 +12,7 @@ class Utils {
 		this.UtilsHelper = UtilsHelper;
 		this.Logger = Logger;
 		this.fsExt = fsext;
+		this.AzureHelper = azureHlr;
 	}
 
 }
