@@ -39,19 +39,42 @@ class AzureHelper {
 			});
 		});
 	}
-	writeFile(blob_service, sourceFilePath, blobName, containerName ){
+
+	async writeFile(blob_service, sourceFilePath, blobName, containerName ){
+		containerName = containerName || CLOUD_ERROR;
+		try {
+			await this.appendFile(blob_service, sourceFilePath, blobName, containerName);
+		}catch(err){
+			await this.createFile(blob_service, sourceFilePath, blobName, containerName);
+			await this.appendFile(blob_service, sourceFilePath, blobName, containerName);
+		}
+	};
+
+	createFile(blob_service, sourceFilePath, blobName, containerName ){
 		containerName = containerName || CLOUD_ERROR;
 		return new Promise((resolve, reject) => {
-			blob_service.createBlockBlobFromLocalFile(containerName, blobName, sourceFilePath, err => {
+			blob_service.createAppendBlobFromLocalFile(containerName, blobName, sourceFilePath, err => {
 				if(err) {
 					reject(err);
 				} else {
-					resolve({ message: `Upload of '${blobName}' complete` });
+					resolve({ message: `Created append of '${blobName}' complete` });
 				}
 			});
 		});
 	};
 
+	appendFile(blob_service, sourceFilePath, blobName, containerName ){
+		containerName = containerName || CLOUD_ERROR;
+		return new Promise((resolve, reject) => {
+			blob_service.appendFromLocalFile(containerName, blobName, sourceFilePath, err => {
+				if(err) {
+					reject(err);
+				} else {
+					resolve({ message: `Append of '${blobName}' complete` });
+				}
+			});
+		});
+	};
 
 	removeFile( blob_service, sourceFilePath, containerName ){
 		containerName = containerName || CLOUD_ERROR;
